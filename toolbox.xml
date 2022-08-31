@@ -1,5 +1,5 @@
 <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-  <category id="http" name="HTTPS" colour="#e65722" icon="wifi">
+  <category id="http" name="HTTP" colour="#e65722" icon="wifi">
     <block type="yolobit_http_connect_wifi">
       <value name="WIFI">
         <shadow type="text">
@@ -13,7 +13,33 @@
       </value>
     </block>
 
+    <block type="yolobit_telegram_get_method">
+      <value name="TOKEN">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+      <value name="ID">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+      <value name="MESSEGE">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+    </block>
+
     <block type="yolobit_http_get_request">
+      <value name="url">
+        <shadow type="text">
+          <field name="TEXT">https://jsonplaceholder.typicode.com/users</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="yolobit_http_post_request">
       <value name="url">
         <shadow type="text">
           <field name="TEXT">https://jsonplaceholder.typicode.com/users</field>
@@ -25,20 +51,23 @@
         </shadow>
       </value>
       <value name="header">
-        <block type="lists_create_with">
-            <mutation items="1"></mutation>
-            <value name="ADD0">
-              <block type="text">
-                <field name="TEXT">User-Agent: OhStem</field>
-              </block>
-            </value>
-        </block>
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
       </value>
     </block>
 
     <block type="yolobit_http_get_status_code" />
     <block type="yolobit_http_get_data_text" />
     <block type="yolobit_http_is_ok" />
+    <block type="yolobit_json_object" />
+    <block type="yolobit_json_member">
+      <value name="MEMBER_VALUE">
+        <shadow type="text">
+          <field name="TEXT"></field>
+        </shadow>
+      </value>
+    </block>
 
   </category>
 </xml>

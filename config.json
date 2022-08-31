@@ -1,6 +1,6 @@
 {
-    "name": "HTTPS",
-    "description": "Mục mở rộng hỗ trợ giao tiếp HTTPs cho ứng dụng IoT",
+    "name": "HTTP",
+    "description": "Mục mở rộng hỗ trợ giao tiếp HTTP cho ứng dụng IoT",
     "libs": [
         "yolobit_wifi.py",
         "urequests.py"
