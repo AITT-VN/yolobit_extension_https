@@ -207,6 +207,7 @@ Blockly.Python['yolobit_http_connect_wifi'] = function(block) {
 
 Blockly.Python['yolobit_telegram_get_method'] = function(block) {
   Blockly.Python.definitions_['import_http'] = 'import urequests';
+  Blockly.Python.definitions_['import_gc'] = 'import gc';
   var value_token = Blockly.Python.valueToCode(block, 'TOKEN', Blockly.Python.ORDER_ATOMIC);
   var value_id = Blockly.Python.valueToCode(block, 'ID', Blockly.Python.ORDER_ATOMIC);
   var value_messege = Blockly.Python.valueToCode(block, 'MESSEGE', Blockly.Python.ORDER_ATOMIC);
@@ -219,12 +220,14 @@ Blockly.Python['yolobit_telegram_get_method'] = function(block) {
   var workspace = block.workspace;
   workspace.createVariable('http_response');
 
-  var code = `http_response = urequests.get(${telegram_url})\n`;
+  var code = `gc.collect()\n`;
+  code += `http_response = urequests.get(${telegram_url})\n`;
   return code;
 };
 
 Blockly.Python['yolobit_http_post_request'] = function(block) {
   Blockly.Python.definitions_['import_http'] = 'import urequests';
+  Blockly.Python.definitions_['import_gc'] = 'import gc';
   var value_url = Blockly.Python.valueToCode(block, 'url', Blockly.Python.ORDER_ATOMIC);
   var value_data = Blockly.Python.valueToCode(block, 'data', Blockly.Python.ORDER_ATOMIC);
   var value_header = Blockly.Python.valueToCode(block, 'header', Blockly.Python.ORDER_ATOMIC);
@@ -256,7 +259,8 @@ Blockly.Python['yolobit_http_post_request'] = function(block) {
       statements_failed_msg || Blockly.Python.PASS
     ]);
 
-  var code = `http_response = urequests.post(${value_url}, data=None, json=${value_data}, headers=${value_header})\n`;
+  var code = `gc.collect()\n`;
+  code += `http_response = urequests.post(${value_url}, data=None, json=${value_data}, headers=${value_header})\n`;
   code += 'http_response.on_successed(' + cbFunctionHttpOnSuccessed + ')\n';
   code += 'http_response.on_failed(' + cbFunctionHttpOnFailed + ')\n';``
   return code;
@@ -264,6 +268,7 @@ Blockly.Python['yolobit_http_post_request'] = function(block) {
 
 Blockly.Python['yolobit_http_get_request'] = function(block) {
   Blockly.Python.definitions_['import_http'] = 'import urequests';
+  Blockly.Python.definitions_['import_gc'] = 'import gc';
   var value_url = Blockly.Python.valueToCode(block, 'url', Blockly.Python.ORDER_ATOMIC);
   var statements_successed_msg = Blockly.Python.statementToCode(block, 'successed_msg');
   var statements_failed_msg = Blockly.Python.statementToCode(block, 'failed_msg');
@@ -294,8 +299,9 @@ Blockly.Python['yolobit_http_get_request'] = function(block) {
       globals,
       statements_failed_msg || Blockly.Python.PASS
     ]);
-
-  var code = `http_response = urequests.get(${value_url})\n`;
+  
+  var code = `gc.collect()\n`;
+  code += `http_response = urequests.get(${value_url})\n`;
   //var code = `http_response = http.request("GET", ${value_url}, None, None, ['User-Agent: OhStem'])\n`;
   code += 'http_response.on_successed(' + cbFunctionHttpOnSuccessed + ')\n';
   code += 'http_response.on_failed(' + cbFunctionHttpOnFailed + ')\n';``
