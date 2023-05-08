@@ -60,6 +60,21 @@
     <block type="yolobit_http_get_status_code" />
     <block type="yolobit_http_get_data_text" />
     <block type="yolobit_http_is_ok" />
+
+    <block type="yolobit_json_index">
+      <value name="INPUT">
+        <shadow type="text">
+          <field name="TEXT">{"key":"value"}</field>
+        </shadow>
+      </value>
+
+      <value name="FIND">
+        <shadow type="text">
+          <field name="TEXT">key</field>
+        </shadow>
+      </value>
+    </block>
+
     <block type="yolobit_json_object" />
     <block type="yolobit_json_member">
       <value name="MEMBER_VALUE">

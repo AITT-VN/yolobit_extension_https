@@ -146,7 +146,7 @@ Blockly.Blocks["yolobit_json_object"] = {
     this.jsonInit({
       colour: "#e65722",
       tooltip: "",
-      message0: "{ %1 %2 }",
+      message0: "tạo chuỗi JSON { %1 %2 }",
       args0: [
         {
           type: "input_dummy"
@@ -167,7 +167,7 @@ Blockly.Blocks["yolobit_json_member"] = {
     this.jsonInit({
       colour: "#e65722",
       tooltip: "",
-      message0: "%1 %2 %3",
+      message0: "từ khóa %1 %2 giá trị %3",
       args0: [
         {
           type: "field_input",
@@ -191,12 +191,35 @@ Blockly.Blocks["yolobit_json_member"] = {
   },
 };
 
+Blockly.Blocks["yolobit_json_index"] = {
+  init: function () {
+    this.jsonInit({
+      colour: "#e65722",
+      tooltip: "Trả về giá trị tương ứng của từ khóa cần tìm trong chuỗi JSON",
+      message0: "giá trị của từ khóa %2 trong chuỗi JSON %1",
+      args0: [
+        {
+          type: "input_value",
+          name: "INPUT"
+        },
+        {
+          type: "input_value",
+          name: "FIND"
+        }
+      ],
+      helpUrl: "",
+      output: null,
+      inputsInline: false,
+    });
+  },
+};
+
 'use strict';
 
 // Any imports need to be reserved words
 Blockly.Python.addReservedWords('wifi');
 
-Blockly.Python['yolobit_http_connect_wifi'] = function(block) {
+Blockly.Python['yolobit_http_connect_wifi'] = function (block) {
   Blockly.Python.definitions_['import_wifi'] = 'from yolobit_wifi import *';
   var value_wifi = Blockly.Python.valueToCode(block, 'WIFI', Blockly.Python.ORDER_ATOMIC);
   var value_password = Blockly.Python.valueToCode(block, 'PASSWORD', Blockly.Python.ORDER_ATOMIC);
@@ -205,7 +228,7 @@ Blockly.Python['yolobit_http_connect_wifi'] = function(block) {
   return code;
 };
 
-Blockly.Python['yolobit_telegram_get_method'] = function(block) {
+Blockly.Python['yolobit_telegram_get_method'] = function (block) {
   Blockly.Python.definitions_['import_http'] = 'import urequests';
   Blockly.Python.definitions_['import_gc'] = 'import gc';
   var value_token = Blockly.Python.valueToCode(block, 'TOKEN', Blockly.Python.ORDER_ATOMIC);
@@ -225,7 +248,7 @@ Blockly.Python['yolobit_telegram_get_method'] = function(block) {
   return code;
 };
 
-Blockly.Python['yolobit_http_post_request'] = function(block) {
+Blockly.Python['yolobit_http_post_request'] = function (block) {
   Blockly.Python.definitions_['import_http'] = 'import urequests';
   Blockly.Python.definitions_['import_gc'] = 'import gc';
   var value_url = Blockly.Python.valueToCode(block, 'url', Blockly.Python.ORDER_ATOMIC);
@@ -243,30 +266,30 @@ Blockly.Python['yolobit_http_post_request'] = function(block) {
   for (var i = 0, variable; variable = variables[i]; i++) {
     varName = variable.name;
     globals.push(Blockly.Python.variableDB_.getName(varName,
-      Blockly.Names.NameType?Blockly.Names.NameType.VARIABLE:Blockly.Variables.NAME_TYPE));
+      Blockly.Names.NameType ? Blockly.Names.NameType.VARIABLE : Blockly.Variables.NAME_TYPE));
   }
   globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') : '';
 
   var cbFunctionHttpOnSuccessed = Blockly.Python.provideFunction_(
     'on_http_response_successed_callback',
     ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '():',
-      statements_successed_msg || Blockly.Python.PASS
+    statements_successed_msg || Blockly.Python.PASS
     ]);
 
   var cbFunctionHttpOnFailed = Blockly.Python.provideFunction_(
     'on_http_response_failed_callback',
     ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '():',
-      statements_failed_msg || Blockly.Python.PASS
+    statements_failed_msg || Blockly.Python.PASS
     ]);
 
   var code = `gc.collect()\n`;
   code += `http_response = urequests.post(${value_url}, data=None, json=${value_data}, headers=${value_header})\n`;
   code += 'http_response.on_successed(' + cbFunctionHttpOnSuccessed + ')\n';
-  code += 'http_response.on_failed(' + cbFunctionHttpOnFailed + ')\n';``
+  code += 'http_response.on_failed(' + cbFunctionHttpOnFailed + ')\n'; ``
   return code;
 };
 
-Blockly.Python['yolobit_http_get_request'] = function(block) {
+Blockly.Python['yolobit_http_get_request'] = function (block) {
   Blockly.Python.definitions_['import_http'] = 'import urequests';
   Blockly.Python.definitions_['import_gc'] = 'import gc';
   var value_url = Blockly.Python.valueToCode(block, 'url', Blockly.Python.ORDER_ATOMIC);
@@ -282,7 +305,7 @@ Blockly.Python['yolobit_http_get_request'] = function(block) {
   for (var i = 0, variable; variable = variables[i]; i++) {
     varName = variable.name;
     globals.push(Blockly.Python.variableDB_.getName(varName,
-      Blockly.Names.NameType?Blockly.Names.NameType.VARIABLE:Blockly.Variables.NAME_TYPE));
+      Blockly.Names.NameType ? Blockly.Names.NameType.VARIABLE : Blockly.Variables.NAME_TYPE));
   }
   globals = globals.length ? Blockly.Python.INDENT + 'global ' + globals.join(', ') : '';
 
@@ -290,55 +313,68 @@ Blockly.Python['yolobit_http_get_request'] = function(block) {
     'on_http_response_successed_callback',
     ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '():',
       globals,
-      statements_successed_msg || Blockly.Python.PASS
+    statements_successed_msg || Blockly.Python.PASS
     ]);
-  
+
   var cbFunctionHttpOnFailed = Blockly.Python.provideFunction_(
     'on_http_response_failed_callback',
     ['def ' + Blockly.Python.FUNCTION_NAME_PLACEHOLDER_ + '():',
       globals,
-      statements_failed_msg || Blockly.Python.PASS
+    statements_failed_msg || Blockly.Python.PASS
     ]);
-  
+
   var code = `gc.collect()\n`;
   code += `http_response = urequests.get(${value_url})\n`;
   //var code = `http_response = http.request("GET", ${value_url}, None, None, ['User-Agent: OhStem'])\n`;
   code += 'http_response.on_successed(' + cbFunctionHttpOnSuccessed + ')\n';
-  code += 'http_response.on_failed(' + cbFunctionHttpOnFailed + ')\n';``
+  code += 'http_response.on_failed(' + cbFunctionHttpOnFailed + ')\n'; ``
   return code;
 };
 
-Blockly.Python['yolobit_http_get_status_code'] = function(block) {
+Blockly.Python['yolobit_http_get_status_code'] = function (block) {
   // TODO: Assemble Python into code variable.
   var code = 'http_response.status_code';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['yolobit_http_get_data_text'] = function(block) {
+Blockly.Python['yolobit_http_get_data_text'] = function (block) {
   var code = 'http_response.text';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['yolobit_http_is_ok'] = function(block) {
+Blockly.Python['yolobit_http_is_ok'] = function (block) {
   var code = 'http_response.is_successed()';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['yolobit_json_object'] = function(block) {
+Blockly.Python['yolobit_json_object'] = function (block) {
   var statement_members = Blockly.Python.statementToCode(block, 'MEMBERS');
   var code = '{\n' + statement_members + '\n}';
   return [code, Blockly.Python.ORDER_NONE];
 };
 
-Blockly.Python['yolobit_json_member'] = function(block, opt_thisOnly) {
+Blockly.Python['yolobit_json_member'] = function (block, opt_thisOnly) {
   var name = block.getFieldValue('MEMBER_NAME');
   var value = Blockly.Python.valueToCode(block, 'MEMBER_VALUE', Blockly.Python.ORDER_ATOMIC);
   //var value = Blockly.Python.valueToCode(block, 'MEMBER_VALUE', Blockly.Python.PRECEDENCE);
   var code = `"${name}" : ${value}`;
   var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-  if (nextBlock && !opt_thisOnly){
+  if (nextBlock && !opt_thisOnly) {
     return code + ',\n';
   } else {
     return code;
   }
+};
+
+Blockly.Python['yolobit_json_index'] = function (block) {
+  Blockly.Python.definitions_['import_ujson'] = 'import ujson';
+  var input = Blockly.Python.valueToCode(block, 'INPUT', Blockly.Python.ORDER_ATOMIC);
+  var find = Blockly.Python.valueToCode(block, 'FIND', Blockly.Python.ORDER_ATOMIC);
+  // TODO: Assemble Python into code variable.
+  if (input.substring(1, 6) == "ujson") {
+    var code = input + '[' + find + ']';
+  } else {
+    var code = 'ujson.loads(' + input + ')[' + find + ']';
+  }
+  return [code, Blockly.Python.ORDER_NONE];
 };
