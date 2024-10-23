@@ -141,7 +141,10 @@ def request(method, url, params=None, cookies=None, data=None, json=None, header
         if proto == "http:":
             port = 80
         elif proto == "https:":
-            import ussl
+            try:
+                import ussl
+            except:
+                import ssl as ussl
             port = 443
         else:
             raise ValueError("Unsupported protocol: " + proto)
